@@ -6,7 +6,7 @@ let repositoryCachesExpirationTime = serverVariables.get("main.repository.CacheE
 // Repository file data models cache
 globalThis.repositoryCaches = [];
 
-export default class CachedRequestManager {
+export default class CachedRequestsManager {
     static add(model, data) {
         if (model != "") {
             RepositoryCachesManager.clear(model);
