@@ -61,10 +61,10 @@ export default class CachedRequestsManager {
     }
     static get(HttpContext) {
         if (CachedRequestsManager.find(HttpContext.url)) {
-            HttpContext.response.JSON(paylod, ETag, true /* from cache */)
+            HttpContext.response.JSON(paylod, ETag, true)
         }
         else {
-            CachedRequestsManager.add(HttpContext.url, HttpContext.paylod, HttpContext.ETag);
+            CachedRequestsManager.add(HttpContext.url, HttpContext.getJSONPayload(), HttpContext.ETag);
         }
     }
 }
