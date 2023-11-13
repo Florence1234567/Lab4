@@ -3,7 +3,7 @@ import { v1 as uuidv1 } from "uuid";
 import * as utilities from "../utilities.js";
 import { log } from "../log.js";
 import CollectionFilter from "./collectionFilter.js";
-import RepositoryCachesManager from "./repositoryCachesManager.js";
+import CachedRequestsManager from "./CachedRequestsManager.js";
 
 globalThis.jsonFilesPath = "jsonFiles";
 globalThis.repositoryEtags = {};
@@ -34,7 +34,7 @@ export default class Repository {
     read() {
         this.objectsList = null;
         if (this.cached) {
-          this.objectsList = RepositoryCachesManager.find(this.objectsName);
+          this.objectsList = CachedRequestsManager.find(this.objectsName);
         }
         if (this.objectsList == null) {
           try {
@@ -42,7 +42,7 @@ export default class Repository {
             // we assume here that the json data is formatted correctly
             this.objectsList = JSON.parse(rawdata);
             if (this.cached)
-              RepositoryCachesManager.add(this.objectsName, this.objectsList);
+              CachedRequestsManager.add(this.objectsName, this.objectsList, this.ETag);
           } catch (error) {
             if (error.code === 'ENOENT') {
               // file does not exist, it will be created on demand
@@ -60,7 +60,7 @@ export default class Repository {
         this.newETag();
         fs.writeFileSync(this.objectsFile, JSON.stringify(this.objectsList));
         if (this.cached) {
-          RepositoryCachesManager.add(this.objectsName, this.objectsList);
+          CachedRequestsManager.add(this.objectsName, this.objectsList);
         }
       }
     nextId() {
