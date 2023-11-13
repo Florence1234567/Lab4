@@ -5,7 +5,6 @@
 // Author : Nicolas Chourot
 // Lionel-Groulx College
 /////////////////////////////////////////////////////////////////////
-import * as CachedRequestsManager from "./models/CachedRequestsManager"; 
 
 export default class MiddlewaresPipeline {
     constructor() {
@@ -16,10 +15,8 @@ export default class MiddlewaresPipeline {
     }
     handleHttpRequest(HttpContext) {
         for (let middleware of this.middlewares) {
-            if (middleware(HttpContext)) {
-                CachedRequestsManager.get()
+            if (middleware(HttpContext)) 
                 return true;
-            }
         }
         return false;
     }
