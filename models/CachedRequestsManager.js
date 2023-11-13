@@ -12,13 +12,13 @@ export default class CachedRequestsManager {
   static add(url, content, ETags = "") {
     if (url != "") {
       CachedRequestsManager.clear(url);
+      console.log("Ajout dans la cache avec l’url associé");
       caches.push({
         url,
         content,
         ETags,
         Expire_Time: utilities.nowInSeconds() + repositoryCachesExpirationTime,
       });
-      console.log("Ajout dans la cache avec l’url associé");
     }
   }
   static clear(url) {
@@ -37,10 +37,9 @@ export default class CachedRequestsManager {
       if (url != "") {
         for (let cache of caches) {
           if (cache.url == url) {
-            cache.Expire_Time =
-              utilities.nowInSeconds() + repositoryCachesExpirationTime;
+            cache.Expire_Time = utilities.nowInSeconds() + repositoryCachesExpirationTime;
             console.log("Extraction de la cache avec l’url associé");
-            return cache.data;
+            return cache.content;
           }
         }
       }
